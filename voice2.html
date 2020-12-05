@@ -1,0 +1,51 @@
+<html>
+    <body>
+        <h2><p>Dutch Text Reader by Sriram Yeluri</p></h2> 
+<script src="https://code.responsivevoice.org/responsivevoice.js"></script>
+<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+
+<textarea autofocus id="text" cols="80" rows="15">wat lees u graag</textarea>
+
+<select name="language" id="voiceselection"> 
+    <option value="Dutch Male">Dutch Male</option> 
+    <option selected value="Dutch Female">Dutch Female</option>      
+</select>
+
+<input 
+  onclick="responsiveVoice.speak($('#text').val(),$('#voiceselection').val(),{rate: 0.8});" 
+  type="button" 
+  value="Play" 
+/>
+
+<input type="button" value="ClearText" onclick="javascript:eraseText();"> 
+<script>
+    function eraseText() {
+    document.getElementById("text").value = "";
+    document.getElementById("text").focus(); 
+}
+</script>
+<button onClick="window.location.reload();">Refresh Page</button>
+
+<script>
+    function getSelectionText() { 
+        var text = "";
+        if (window.getSelection) { 
+            text = window.getSelection().toString(); 
+        // for Internet Explorer 8 and below. For Blogger, you should use &amp;&amp; instead of &&. 
+            } else if (document.selection && document.selection.type != "Control") { 
+                text = document.selection.createRange().text;
+                }
+                return text; 
+    }
+    $(document).ready(function (){ // when the document has completed loading 
+        $(document).mouseup(function (e){ // attach the mouseup event for all div and pre tags 
+            setTimeout(function() { // When clicking on a highlighted area, the value stays highlighted until after the mouseup event, and would therefore stil be captured by getSelection. This micro-timeout solves the issue.  
+            responsiveVoice.cancel(); // stop anything currently being spoken 
+            responsiveVoice.speak(getSelectionText(),$('#voiceselection').val(),{rate: 0.8}); //speak the text as returned by getSelectionText 
+            }, 1); 
+        }); 
+    });
+</script>
+<script src="https://code.responsivevoice.org/responsivevoice.js?key=c5Qjxrbh"></script>
+</body>
+</html>
